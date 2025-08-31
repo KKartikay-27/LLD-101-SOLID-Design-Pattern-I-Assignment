@@ -12,17 +12,24 @@ public class ProfileService {
         if (id == null || id.isBlank()) throw new IllegalArgumentException("bad id");
         if (email == null || !email.contains("@")) throw new IllegalArgumentException("bad email");
 
-        UserProfile p = new UserProfile(id, email);
+        UserProfile p = new UserProfile.Builder(id, email).build();
         // later code keeps mutating...
         return p;
     }
 
-    public void updateDisplayName(UserProfile p, String displayName) {
+    public UserProfile updateDisplayName(UserProfile p, String displayName) {
         Objects.requireNonNull(p, "profile");
         if (displayName != null && displayName.length() > 100) {
             // silently trim (inconsistent policy)
             displayName = displayName.substring(0, 100);
         }
-        p.setDisplayName(displayName); // mutability leak
+        return new UserProfile.Builder(p.getId(), p.getEmail())
+            .phone(p.getPhone())
+            .address(p.getAddress())
+            .marketingOptIn(p.isMarketingOptIn())
+            .twitter(p.getTwitter())
+            .github(p.getGithub())
+            .displayName(displayName)
+            .build();
     }
 }

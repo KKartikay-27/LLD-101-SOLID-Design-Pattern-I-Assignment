@@ -5,8 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Properties;
 
-import javax.management.RuntimeErrorException;
-
 /**
  * FAULTY "Singleton": public constructor, getInstance() returns a NEW instance each time,
  * not thread-safe, reload allowed anytime, mutable global state, reflection+serialization-friendly.
